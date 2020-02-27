@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Provides api for Gamification",
   "author": "j-ambrosio <jhonatan.ambrosio@hotmail.com>",
-  "license": "GPL",
+  "license": "GPL-3.0-or-later",
   "main": "app.js",
   "keywords": [
     "nodejs",
