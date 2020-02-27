@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  gameapi:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: gameapi
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB 
+    ports:
+      - "80:8080"
+    volumes:
+      - ./api:/home/gameapi/app
+      - node_modules:/home/gameapi/app/node_modules
+    networks:
+      - gameapi-network
+  
+  db:
+    image: mongo:4.1.8-xenial
+    container_name: gamedb
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:  
+      - dbdata:/data/db
+    networks:
+      - gameapi-network
+
+networks:
+  gameapi-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:  

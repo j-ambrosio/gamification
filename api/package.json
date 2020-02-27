@@ -1,0 +1,20 @@
+{
+  "name": "gamification-api",
+  "version": "1.0.0",
+  "description": "Provides api for Gamification",
+  "author": "j-ambrosio <jhonatan.ambrosio@hotmail.com>",
+  "license": "GPL",
+  "main": "app.js",
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.10"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
