@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  gameapi:
+    build:
+      context: .
+      dockerfile: gameapi.Dockerfile
+    image: gameapi:1.0.0
+    container_name: gameapi
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3380:8080"
+    volumes:
+      - .:/home/gameapi/app
+      - node_modules:/home/gameapi/app/node_modules
+    networks:
+      - gameapi-network
+    links:
+      - gameapidb
+  
+  gameapidb:
+    build:
+      context: .
+      dockerfile: gameapidb.Dockerfile
+    image: gameapidb:1.0.0
+    container_name: gameapidb
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "33017:27017"
+    volumes:  
+      - dbdata:/data/db
+    networks:
+      - gameapi-network
+
+networks:
+  gameapi-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:  
