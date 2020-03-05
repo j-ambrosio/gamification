@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const {
-  MONGO_USERNAME,
-  MONGO_PASSWORD,
-  MONGO_HOSTNAME,
-  MONGO_PORT,
-  MONGO_DB
+  DB_APPLICATION_USER,
+  DB_APPLICATION_PASS,
+  DB_HOSTNAME,
+  DB_PORT,
+  DB_APPLICATION_DATABASE
 } = process.env;
 
 const options = {
@@ -15,7 +15,7 @@ const options = {
   connectTimeoutMS: 10000,
 };
 
-const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
+const url = `mongodb://${DB_APPLICATION_USER}:${DB_APPLICATION_PASS}@${DB_HOSTNAME}:${DB_PORT}/${DB_APPLICATION_DATABASE}?authSource=admin`;
 
 mongoose.connect(url, options).then( function() {
   console.log('MongoDB is connected');
