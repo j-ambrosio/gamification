@@ -5,7 +5,7 @@ const {
   DB_APPLICATION_PASS,
   DB_HOSTNAME,
   DB_PORT,
-  DB_APPLICATION_DATABASE
+  MONGO_INITDB_DATABASE
 } = process.env;
 
 const options = {
@@ -15,7 +15,7 @@ const options = {
   connectTimeoutMS: 10000,
 };
 
-const url = `mongodb://${DB_APPLICATION_USER}:${DB_APPLICATION_PASS}@${DB_HOSTNAME}:${DB_PORT}/${DB_APPLICATION_DATABASE}?authSource=admin`;
+const url = `mongodb://${DB_APPLICATION_USER}:${DB_APPLICATION_PASS}@${DB_HOSTNAME}:${DB_PORT}/${MONGO_INITDB_DATABASE}`;
 
 mongoose.connect(url, options).then( function() {
   console.log('MongoDB is connected');

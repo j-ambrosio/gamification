@@ -3,7 +3,7 @@ version: '3'
 services:
   gameapi:
     build:
-      context: .
+      context: ./api
       dockerfile: gameapi.Dockerfile
     image: gameapi:1.0.0
     container_name: gameapi
@@ -12,12 +12,13 @@ services:
     ports:
       - "3380:8080"
     volumes:
-      - .:/home/gameapi/app
+      - ./api/:/home/gameapi/app
       - node_modules:/home/gameapi/app/node_modules
     networks:
       - gameapi-network
     links:
       - gameapidb
+    command: npm run dev
   
   gameapidb:
     image: mongo:latest
@@ -27,7 +28,7 @@ services:
     ports:
       - "33017:27017"
     volumes:
-      - "./gameapidb-entrypoint.sh:/docker-entrypoint-initdb.d/gameapidb-entrypoint.sh"
+      - "./api/gameapidb-entrypoint.sh:/docker-entrypoint-initdb.d/gameapidb-entrypoint.sh"
       - gameapidb_data:/data/db
     networks:
       - gameapi-network
