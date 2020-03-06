@@ -5,7 +5,9 @@ The purpose of this api is to allow a range of applications to track actions fro
 
 ## Installation
 
-Clone this project and when in the root folder run the command below
+Clone this project and when in the **root folder**:
+- copy the file *example.env* to *.env* 
+- run the command below
 
 ```bash
 docker-compose up -d
