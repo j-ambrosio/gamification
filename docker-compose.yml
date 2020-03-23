@@ -1,6 +1,60 @@
-version: '3'
+version: "3"
 
 services:
+  gameapi-kongdb:
+    image: postgres:latest
+    env_file: .env
+    container_name: gameapi-kongdb
+    ports:
+      - 5555:5432
+    networks:
+      - gameapi-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    stdin_open: true
+    tty: true
+    volumes:
+      - gameapikong_data:/var/lib/postgresql/data
+
+  gameapi-kong-migration:
+    image: kong:latest
+    container_name: gameapi-kong-migration
+    env_file: .env
+    networks:
+      - gameapi-network
+    command: "kong migrations bootstrap"
+    restart: on-failure
+    depends_on:
+      - gameapi-kongdb
+    links:
+      - gameapi-kongdb
+
+  gameapi-kong:
+    image: kong:latest
+    container_name: gameapi-kong
+    env_file: .env
+    restart: always
+    networks:
+      - gameapi-network
+    depends_on:
+      - gameapi-kong-migration
+      - gameapi-kongdb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://kong:8001"]
+      interval: 5s
+      timeout: 2s
+      retries: 15
+    ports:
+      - "8001:8001"
+      - "8000:8000"
+      - "8443:8443"
+      - "8444:8444"
+    links:
+      - gameapi-kongdb
+
   gameapi:
     build:
       context: ./api
@@ -19,7 +73,6 @@ services:
     links:
       - gameapidb
     command: npm run dev
-  
   gameapidb:
     image: mongo:latest
     container_name: gameapidb
@@ -38,5 +91,6 @@ networks:
     driver: bridge
 
 volumes:
+  gameapikong_data:
   gameapidb_data:
-  node_modules:  
+  node_modules:
